@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'maven-publish'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:support-vector-drawable:${supportLibVersion}"
+    implementation "com.android.support:design:${supportLibVersion}"
+
+    // Model and livedata
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.3'
+
+    implementation "io.arrow-kt:arrow-core:${arrowVersion}"
+    implementation "io.arrow-kt:arrow-instances-core:${arrowVersion}"
+    implementation "io.arrow-kt:arrow-instances-data:${arrowVersion}"
+    implementation "io.arrow-kt:arrow-effects:${arrowVersion}"
+    implementation "io.arrow-kt:arrow-effects-kotlinx-coroutines:${arrowVersion}"
+
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.3.0"
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            groupId 'org.akme'
+            artifactId 'akme'
+            version '0.1'
+
+            artifact(bundleRelease)
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.compile.allDependencies.each {
+                    if(it.group != null && (it.name != null || "unspecified".equals(it.name)) && it.version != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}

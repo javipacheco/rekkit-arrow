@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Rekkit</string>
+    <string name="header_title">Rekkit</string>
+    <string name="header_subtitle">Kotlin + Arrow</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="news">News</string>
+    <string name="reload">Reload</string>
+    <string name="communicate">Communicate</string>
+    <string name="github">GitHub</string>
+
+    <string name="noMoreNews">There aren\'t new messages</string>
+    <string name="loadingNewsError">Error loading news</string>
+
+    <string name="navigationError">Navigation error</string>
+    <string name="itemNotFoundError">Item not found</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
